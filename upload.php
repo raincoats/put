@@ -28,23 +28,23 @@ if (! isset($_FILES['up'])){
 }
 
 /* sanitizing */
-function mr_sparkle($in)
+function mr_sparkle($filename)
 {
-    if (preg_match('/(r57\.php|c99\.php)/', $in)){
+    if (preg_match('/(r57\.php|c99\.php)/', $filename)){
         echo 'Are you joking? Fuck off'; die();
     }
-    $in = preg_replace('/( %2F | %2E | \.\. | \/ )/xi', '-', $in);         //dir traversal
-    $in = preg_replace('/[^a-zA-Z0-9\.,?%@\(\)_:+=\{\}&]/ms', '-', $in);
-    $in = preg_replace('/%[0-9A-F][0-9A-F]/i', '', $in);
-    $in = preg_replace('/[\s-]+/', '-', $in);                              //squash dash, dots, whitespace
-    $in = preg_replace('/\.+/', '.', $in);
-    $in = preg_replace('/(.{0,250}).*/', "$1", $in);                       //max 250 chars
-    $in = preg_replace('/( ^[^a-zA-Z0-9] | [^a-zA-Z0-9]$ )/x', '', $in);   //stricter on beginning and end
+    $filename = preg_replace('/( %2F | %2E | \.\. | \/ )/xi', '-', $filename);         //dir traversal
+    $filename = preg_replace('/[^a-zA-Z0-9\.,?%@\(\)_:+=\{\}&]/ms', '-', $filename);
+    $filename = preg_replace('/%[0-9A-F][0-9A-F]/i', '', $filename);
+    $filename = preg_replace('/[\s-]+/', '-', $filename);                              //squash dash, dots, whitespace
+    $filename = preg_replace('/\.+/', '.', $filename);
+    $filename = preg_replace('/(.{0,250}).*/', "$1", $filename);                       //max 250 chars
+    $filename = preg_replace('/( ^[^a-zA-Z0-9] | [^a-zA-Z0-9]$ )/x', '', $filename);   //stricter on beginning and end
 
-    if (strlen($in) < 1) {  // effectively empty
-            $in = 'untitled';
+    if (strlen($filename) < 1) {  // empty
+            $filename = 'untitled';
     }
-    return (UPLOAD_DIR.$in);
+    return (UPLOAD_DIR.$filename);
 }
 
 $up = $_FILES['up'];
