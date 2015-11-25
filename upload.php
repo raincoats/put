@@ -24,7 +24,7 @@
 define("UPLOAD_DIR", '/www/put/uploads/');
 
 if (! isset($_FILES['up'])){
-    die('No files specified.');
+    die("No files specified\n");
 }
 
 /* sanitizing */
@@ -66,8 +66,8 @@ for ($i=0; $i<count($up['name']); $i++){ // for each file being uploaded
         $name = $name ." ". $o;
     }
 
-    move_uploaded_file($temp, $name) or die("Could not move upload to upload directory");
-    @chmod($name, 00600) or die ("Could not chmod uploaded file");
+    move_uploaded_file($temp, $name) or die("Could not move upload to upload directory\n");
+    @chmod($name, 00600) or die ("Could not chmod uploaded file\n");
 
 
     /* [OK] 1: file                 ------>             file */
