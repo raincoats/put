@@ -21,7 +21,7 @@ function mr_sparkle($in)
     $in = preg_replace('/%[0-9A-F][0-9A-F]/i', '', $in);
     $in = preg_replace('/[\s-]+/', '-', $in);                              //squash dash, dots, whitespace
     $in = preg_replace('/\.+/', '.', $in);
-    $in = preg_replace('/(.{0,64}).*/', "$1", $in);                        //max 100 chars
+    $in = preg_replace('/(.{0,250}).*/', "$1", $in);                       //max 250 chars
     $in = preg_replace('/( ^[^a-zA-Z0-9] | [^a-zA-Z0-9]$ )/x', '', $in);   //stricter on beginning and end
 
     if (strlen($in) < 1) {  // effectively empty
@@ -37,16 +37,17 @@ for ($i=0; $i<count($up['name']); $i++){
     $name = mr_sparkle($up['name'][$i]);
     $temp = $up['tmp_name'][$i];
 
-    $o = 1;
-    while (file_exists($name)){
-        $o++;
-        $name = preg_replace('/( \d+)*$/', '', $name);
-        $name = $name." $o";
-        $o < 100?: die();
+    if (file_exists($name)){
+        $o = 1;
+        while (file_exists($name ." ". $o)){
+            $o++;
+            $o < 999?: die("Too many files with that name");
+        }
+        $name = $name ." ". $o;
     }
 
-        move_uploaded_file($temp, $name);
-        @chmod($name, 00600);
+    move_uploaded_file($temp, $name);
+    @chmod($name, 00600);
 
 
 
